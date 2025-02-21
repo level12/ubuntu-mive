@@ -1,0 +1,59 @@
+name: App
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app-pkg/**'
+  pull_request:
+    paths:
+      - 'app-pkg/**'
+  workflow_dispatch:
+  workflow_run:
+    # Known issue: a single commit with changes to both base or mive and the app will result in
+    # this workflow getting kicked off twice.  Given that should be rare, and the concurrency
+    # protection in place just below, it seems a good tradeoff for being able to specify separate
+    # workflows while still having the nox workflow run when the docker images get rebuilt.
+    workflows: ["Mive Build"]
+    types:
+      - completed
+
+# Limit this workflow to a single run at a time to avoid race conditions
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  nox:
+    runs-on: ubuntu-latest
+
+    # Runs all steps inside this container, which should be fresh due to a push to this repo
+    # or the nightly scheduled run.
+    container:
+      image: ghcr.io/level12/ubuntu-mive:24-3.13
+      options: --user root
+
+    env:
+      UV_LINK_MODE: copy
+
+    steps:
+      - name: Checkout Code (Optional)
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        working-directory: ./app-pkg
+        run: |
+          # prep venv
+          uv sync
+
+          # Run directly w/ uv which should work when no other tools than python are needed
+          uv run nox
+
+          # Run w/ mise should be same results as uv, but would be used if other mise tooling
+          # was needed for the tests (e.g. npm).
+          mise exec -- nox

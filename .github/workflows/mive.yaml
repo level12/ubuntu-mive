@@ -1,0 +1,63 @@
+name: Mive Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'base/**'
+      - 'mive/**'
+  pull_request:
+    paths:
+      - 'base/**'
+      - 'mive/**'
+  workflow_dispatch:
+  schedule:
+      # 10:37 UTC daily
+    - cron: '*/3 * * * *'
+
+
+# Limit this workflow to a single run at a time to avoid race conditions
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Images
+        run: |
+          # mive image does a copy from these but docker doesn't pull them automaticaly even with
+          # `build --pull`.  So, pull them manually first.
+          docker pull jdxcode/mise:latest
+          docker pull ghcr.io/astral-sh/uv:latest
+
+          # Build ubuntu base and mive images, pulling in base images they are dependent on first.
+          docker compose build --pull
+
+      - name: Push Images
+        # Push ubuntu base and mive images
+        run: docker compose push
