@@ -1,0 +1,50 @@
+[build-system]
+requires = [
+    'hatchling',
+    'hatch-regex-commit',
+]
+build-backend = 'hatchling.build'
+
+
+[project]
+name = 'mivepy'
+authors = [
+    {name = 'Randy Syring', email = 'devteam@level12.io'},
+]
+requires-python = '>=3.13'
+dynamic = ['version']
+readme = 'readme.md'
+
+[project.scripts]
+'mivepy' = 'mivepy.cli:main'
+[dependency-groups]
+# Note: keeping copier-py-package deps grouped separate from app deps should help avoid unnecessary
+# conflicts when upgrading to copier-py-package latest.
+dev = [
+    # From copier-py-package:
+    'click>=8.1.8',
+    'hatch>=1.14.0',
+    'pip-audit',
+    'ruff>=0.9.6',
+
+    # App specific:
+    # TODO: fill in app deps here
+]
+pre-commit = [
+    # From copier-py-package:
+    'pre-commit>=4.1.0',
+]
+tests = [
+    # From copier-py-package:
+    'nox>=2025.2.9',
+    'pytest>=8.3.4',
+    'pytest-cov>=6.0',
+
+    # App specific:
+    'click',
+]
+
+[tool.uv]
+# These default dependency groups are installed (along w/ base dependencies) when using `uv sync`.
+# They are split out like this so nox can install them independently.
+default-groups = ['dev', 'pre-commit', 'tests']

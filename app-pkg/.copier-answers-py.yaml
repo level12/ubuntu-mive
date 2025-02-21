@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.20241017.2-8-gc629843
+_src_path: ../copier-py-package/
+author_email: devteam@level12.io
+author_name: Randy Syring
+hatch_version_tag_sign: true
+project_name: mivepy
+py_module: mivepy
+python_version: '3.13'
+script_name: mivepy
+virtualenv_name: mivepy
