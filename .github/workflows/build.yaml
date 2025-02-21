@@ -1,0 +1,53 @@
+name: Ubuntu Base Builder
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Image
+        run: |
+          docker pull jdxcode/mise:latest
+          docker pull ghcr.io/astral-sh/uv:latest
+          docker compose build --pull
+
+      - name: Push Image
+        run: docker compose push
+
+  # test:
+  #   needs: build  # Ensure test job runs after build
+  #   runs-on: ubuntu-latest
+  #   container: ghcr.io/${{ github.actor }}/my-app:latest  # Runs all steps inside this container
+
+  #   steps:
+  #     - name: Checkout Code (Optional)
+  #       uses: actions/checkout@v4
+
+  #     - name: Run Tests
+  #       run: pytest  # Runs inside the container automatically

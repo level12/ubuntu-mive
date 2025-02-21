@@ -1,0 +1,41 @@
+
+# WARN: service order in this file is important as compose will build the files in the order listed.
+
+services:
+  base-22.04:
+    image: ghcr.io/level12/ubuntu-base:22.04
+    container_name: ubuntu-base-22.04
+    build:
+      context: base
+      dockerfile: Dockerfile
+      args:
+        UBUNTU_TAG: 22.04
+
+  base-24.04:
+    image: ghcr.io/level12/ubuntu-base:24.04
+    container_name: ubuntu-base-24.04
+    build:
+      context: base
+      dockerfile: Dockerfile
+      args:
+        UBUNTU_TAG: 24.04
+
+  # mive-24-3.12:
+  #   image: ghcr.io/level12/ubuntu-mive:24-3.12
+  #   container_name: ubuntu-mive-24-3.12
+  #   build:
+  #     context: mive
+  #     dockerfile: Dockerfile
+  #     args:
+  #       UBUNTU_TAG: 24.04
+  #       PYTHON_VER: 3.12
+
+  # mive-24-3.13:
+  #   image: ghcr.io/level12/ubuntu-mive:24-3.13
+  #   container_name: ubuntu-mive-24-3.13
+  #   build:
+  #     context: mive
+  #     dockerfile: Dockerfile
+  #     args:
+  #       UBUNTU_TAG: 24.04
+  #       PYTHON_VER: 3.13
