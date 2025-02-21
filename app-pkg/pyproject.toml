@@ -27,7 +27,7 @@ dependencies = [
 # conflicts when upgrading to copier-py-package latest.
 dev = [
     # From copier-py-package:
-    'click>=8.1.8',
+    {include-group = "tests"},
     'hatch>=1.14.0',
     'pip-audit',
     'ruff>=0.9.6',
@@ -43,8 +43,3 @@ tests = [
     # App specific:
     # TODO: fill in app deps here
 ]
-
-[tool.uv]
-# These default dependency groups are installed (along w/ base dependencies) when using `uv sync`.
-# They are split out like this so nox can install them independently.
-default-groups = ['dev', 'tests']

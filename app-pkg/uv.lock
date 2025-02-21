@@ -439,9 +439,10 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "click" },
     { name = "hatch" },
+    { name = "nox" },
     { name = "pip-audit" },
+    { name = "pytest" },
     { name = "ruff" },
 ]
 tests = [
@@ -454,9 +455,10 @@ requires-dist = [{ name = "click", specifier = ">=8.1.8" }]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "click", specifier = ">=8.1.8" },
     { name = "hatch", specifier = ">=1.14.0" },
+    { name = "nox", specifier = ">=2025.2.9" },
     { name = "pip-audit" },
+    { name = "pytest", specifier = ">=8.3.4" },
     { name = "ruff", specifier = ">=0.9.6" },
 ]
 tests = [

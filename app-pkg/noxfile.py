@@ -13,7 +13,7 @@ def pip_sync(session, path):
 
 @nox.session
 def tests(session: nox.Session):
-    session.run('uv', 'sync', '--active', '--only-group', 'tests')
+    session.run('uv', 'sync', '--active', '--no-dev', '--group', 'tests')
     session.run(
         'pytest',
         '-ra',
