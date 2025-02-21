@@ -33,6 +33,7 @@ env LANG=en_US.UTF-8 \
 run apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
+        jq \
         libffi-dev \
         libreadline-dev \
 	# git: get the semi-official latest-stable git instead of using the old(er) version from the
