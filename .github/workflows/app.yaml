@@ -6,9 +6,11 @@ on:
       - main
     paths:
       - 'app-pkg/**'
+      - .github/workflow/app.yaml
   pull_request:
     paths:
       - 'app-pkg/**'
+      - .github/workflow/app.yaml
   workflow_dispatch:
   workflow_run:
     # Known issue: a single commit with changes to both base or mive and the app will result in

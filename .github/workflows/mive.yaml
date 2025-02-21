@@ -7,14 +7,16 @@ on:
     paths:
       - 'base/**'
       - 'mive/**'
+      - .github/workflow/mive.yaml
   pull_request:
     paths:
       - 'base/**'
       - 'mive/**'
+      - .github/workflow/mive.yaml
   workflow_dispatch:
   schedule:
       # 10:37 UTC daily
-    - cron: '*/3 * * * *'
+    - cron: '37 10 * * *'
 
 
 # Limit this workflow to a single run at a time to avoid race conditions
