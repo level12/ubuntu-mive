@@ -11,51 +11,53 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-ubuntu-mive:
-    runs-on: ubuntu-latest
+  # build-ubuntu-mive:
+  #   runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #     attestations: write
+  #     id-token: write
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3.3.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Log in to the Container registry
+  #       uses: docker/login-action@v3.3.0
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Images
-        run: |
-          # mive image does a copy from these but docker doesn't pull them automaticaly even with
-          # `build --pull`.  So, pull them manually first.
-          docker pull jdxcode/mise:latest
-          docker pull ghcr.io/astral-sh/uv:latest
+  #     - name: Build Images
+  #       run: |
+  #         # mive image does a copy from these but docker doesn't pull them automaticaly even with
+  #         # `build --pull`.  So, pull them manually first.
+  #         docker pull jdxcode/mise:latest
+  #         docker pull ghcr.io/astral-sh/uv:latest
 
-          # Build ubuntu base and mive images, pulling in base images they are dependent on first.
-          docker compose build --pull
+  #         # Build ubuntu base and mive images, pulling in base images they are dependent on first.
+  #         docker compose build --pull
 
-      - name: Push Images
-        # Push ubuntu base and mive images
-        run: docker compose push
+  #     - name: Push Images
+  #       # Push ubuntu base and mive images
+  #       run: docker compose push
 
   test:
     runs-on: ubuntu-latest
     # Ensure tests are running on the just built images
-    needs: build-ubuntu-mive
+    # needs: build-ubuntu-mive
 
     # Runs all steps inside this container
-    container: ghcr.io/level12/ubuntu-mive:24-3.13
+    container:
+      image: ghcr.io/level12/ubuntu-mive:24-3.13
+      options: --user root
 
     steps:
       - name: Checkout Code (Optional)
         uses: actions/checkout@v4
 
       - name: Run Tests
-        run: nox
+        run: mise exec -- nox
