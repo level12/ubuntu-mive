@@ -52,13 +52,7 @@ jobs:
 
       - name: Build Images
         run: |
-          # mive image does a copy from these but docker doesn't pull them automaticaly even with
-          # `build --pull`.  So, pull them manually first.
-          docker pull jdxcode/mise:latest
-          docker pull ghcr.io/astral-sh/uv:latest
-
-          # Build ubuntu base and mive images, pulling in base images they are dependent on first.
-          docker compose build --pull
+          ./tasks/build-all
 
       - name: Push Images
         # Push ubuntu base and mive images

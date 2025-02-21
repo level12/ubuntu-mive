@@ -22,3 +22,7 @@ run mkdir -p /home/ubuntu/.local/share/uv/python/
 # Mise tools install
 run mise install python@${PYTHON_VER} \
     && mise sync python --uv
+
+# Include a script that can be used by apps in CI to ensure the latest version of these tools is
+# being used and the build pipeline hasn't broken down or gone stale without us noticing.
+copy --chmod=777 version-checks.sh /usr/local/bin/mive-version-checks

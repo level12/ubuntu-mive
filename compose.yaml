@@ -1,6 +1,7 @@
 
 # WARN: service order in this file is important as compose will build the files in the order listed.
 
+# NOTE: if adding services, also add them to tasks/build-dev.
 services:
   base-22.04:
     image: ghcr.io/level12/ubuntu-base:22.04
@@ -39,3 +40,7 @@ services:
       args:
         UBUNTU_TAG: 24.04
         PYTHON_VER: 3.13
+
+  version-checks:
+    image: ghcr.io/level12/ubuntu-mive:24-3.13
+    entrypoint: /usr/local/bin/mive-version-checks

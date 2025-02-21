@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# We want the base builds to pull from upstream
+docker compose run --build --rm version-checks

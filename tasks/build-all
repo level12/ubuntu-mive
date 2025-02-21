@@ -1,0 +1,17 @@
+#!/bin/bash
+#MISE description='Build base and mive Docker images'
+
+# We want the base builds to pull from upstream
+docker compose build --pull base-22.04 base-24.04
+
+# mive image does a copy from these but we need to make sure the cached layers are up-to-date
+docker pull jdxcode/mise:latest
+docker pull ghcr.io/astral-sh/uv:latest
+
+# Now, we don't want the upstream builds which is what was last pushed in CI.  We want what was
+# just built and is cached in the local docker instance.  This is true for both dev and CI.
+# So, don't use --pull.
+docker compose build mive-24-3.12 mive-24-3.13
+
+# Now, if doing local dev, use the images in local cache.
+# If CI, then what was just built is ready to be pushed for app CI to use.

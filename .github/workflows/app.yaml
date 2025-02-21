@@ -26,9 +26,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   nox:
@@ -44,6 +41,9 @@ jobs:
       UV_LINK_MODE: copy
 
     steps:
+      - name: Ensure mise & uv are the latest version
+        run: mive-version-checks
+
       - name: Checkout Code (Optional)
         uses: actions/checkout@v4
 
