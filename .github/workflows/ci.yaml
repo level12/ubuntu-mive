@@ -62,5 +62,12 @@ jobs:
       - name: Run Tests
         working-directory: ./app-pkg
         run: |
+          # prep venv
           uv sync
+
+          # Run directly w/ uv which should work when no other tools than python are needed
           uv run nox
+
+          # Run w/ mise should be same results as uv, but would be used if other mise tooling
+          # was needed for the tests (e.g. npm).
+          mise nox
