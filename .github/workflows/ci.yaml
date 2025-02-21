@@ -55,6 +55,9 @@ jobs:
       image: ghcr.io/level12/ubuntu-mive:24-3.13
       options: --user root
 
+    env:
+      UV_LINK_MODE: copy
+
     steps:
       - name: Checkout Code (Optional)
         uses: actions/checkout@v4
@@ -70,4 +73,4 @@ jobs:
 
           # Run w/ mise should be same results as uv, but would be used if other mise tooling
           # was needed for the tests (e.g. npm).
-          mise nox
+          mise exec -- nox
