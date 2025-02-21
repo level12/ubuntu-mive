@@ -2,7 +2,7 @@
 arg UBUNTU_TAG=24.04
 arg PYTHON_VER=3.12
 
-from ghcr.io/level12/ubuntu-base:24.04
+from ghcr.io/level12/ubuntu-base:${UBUNTU_TAG}
 
 # Has to be referenced in this build stage to be viewable
 arg PYTHON_VER
