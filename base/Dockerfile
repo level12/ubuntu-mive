@@ -52,6 +52,8 @@ fi
 
 user ubuntu
 env PATH=/home/ubuntu/bin:/home/ubuntu/.local/bin:$PATH
+env USER=ubuntu
+workdir /home/ubuntu
 
 # opt-out of this security feature, not needed in a CI environment
 run git config --global --add safe.directory '*'
